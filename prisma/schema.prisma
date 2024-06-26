@@ -32,7 +32,7 @@ model Server {
   imageUrl String
   inviteCode String
   members Member[]
-  channel Channel[]
+  channels Channel[]
   profileId String @db.ObjectId
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())

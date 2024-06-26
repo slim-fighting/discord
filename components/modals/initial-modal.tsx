@@ -1,7 +1,9 @@
-"use client";
+"use client"
+
 import * as Z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 import {
   Dialog,
   DialogContent,
@@ -21,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FileUpload from "@/components/file-upload";
+import { useRouter } from "next/navigation";
 
 const formSchema = Z.object({
   name: Z.string().min(1, {
@@ -31,6 +34,7 @@ const formSchema = Z.object({
   }),
 });
 const InitialModal = () => {
+  const router = useRouter();
   const form = useForm({
     defaultValues: {
       name: "",
@@ -40,7 +44,14 @@ const InitialModal = () => {
   });
   const isLoading = form.formState.isSubmitting;
   const onSubmit = async (values: Z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      await axios.post("/api/servers", values);
+      form.reset();
+      router.refresh();
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Dialog open>

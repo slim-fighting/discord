@@ -4,7 +4,7 @@ import { initialProfile } from "@/lib/initial-profile";
 import { redirect } from "next/navigation";
 
 
-const SetupPage =async () => {
+const SetupPage = async () => {
     const profile = await initialProfile() as any;
     console.log(111,profile);
     
