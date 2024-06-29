@@ -33,7 +33,7 @@ const formSchema = Z.object({
     message: "Image URL is required.",
   }),
 });
-const InitialModal = () => {
+export const InitialModal = () => {
   const router = useRouter();
   const form = useForm({
     defaultValues: {
@@ -119,5 +119,3 @@ const InitialModal = () => {
     </Dialog>
   );
 };
-
-export default InitialModal;
