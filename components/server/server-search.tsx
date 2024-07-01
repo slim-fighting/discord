@@ -3,6 +3,7 @@
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
+import { useParams, useRouter } from "next/navigation";
 
 interface IServerSearchProps {
     data: {
@@ -19,6 +20,8 @@ export const ServerSearch = ({
     data
 }: IServerSearchProps) => {
     const [open,setOpen] = useState(false);
+    const params = useParams();
+    const router = useRouter();
     useEffect(()=> {
         const down = (e:KeyboardEvent)=> {
             if(e.key === "k" && (e.metaKey || e.ctrlKey)) {
@@ -29,6 +32,16 @@ export const ServerSearch = ({
         document.addEventListener("keydown", down);
         document.removeEventListener("keydown", down);
     },[]);
+
+    const onClick = ({ type, id }:{type: "channel" | "member";id: string}) => {
+        setOpen(false);
+        if(type === "member") {
+            return router.push(`/servers/${params?.serverId}/conversations/${id}`);
+        }
+        if(type==="channel") {
+            return router.push(`/servers/${params?.serverId}/channels/${id}` );
+        }
+    }
     return (
       <>
         <button
@@ -63,7 +76,7 @@ export const ServerSearch = ({
                         <CommandGroup key={label} heading={label}>
                             {data?.map(({id, icon, name})=> {
                                 return (
-                                    <CommandItem key={id}>
+                                    <CommandItem key={id} onSelect={() => onClick({type, id})}>
                                         {icon}
                                         <span>{name}</span>
                                     </CommandItem>

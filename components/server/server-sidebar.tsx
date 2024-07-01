@@ -6,6 +6,9 @@ import { ServerHeader } from "./server-header";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ServerSearch } from "./server-search";
 import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from "lucide-react";
+import { Separator } from "../ui/separator";
+import { ServerSection } from "./server-section";
+import { ServerChannel } from "./server-channel";
 
 
 interface IServerSidebarProps {
@@ -103,6 +106,61 @@ export const ServerSidebar = async ({ serverId }: IServerSidebarProps) => {
             ]}
           />
         </div>
+        <Separator className="my-2 rounded-md bg-zinc-200 dark:bg-zinc-700" />
+        {!!textChannels?.length && (
+          <div className="mt-2">
+            <ServerSection
+              role={role}
+              channelType={ChannelType.TEXT}
+              sectionType="channels"
+              label="Text Channels"
+            />
+            {textChannels.map((channel) => (
+              <ServerChannel
+                key={channel.id}
+                channel={channel}
+                role={role}
+                server={server}
+              />
+            ))}
+          </div>
+        )}
+        {!!audioChannels?.length && (
+          <div className="mt-2">
+            <ServerSection
+              role={role}
+              channelType={ChannelType.AUDIO}
+              sectionType="channels"
+              label="Voice Channels"
+            />
+            {audioChannels.map((channel) => (
+              <ServerChannel
+                key={channel.id}
+                channel={channel}
+                role={role}
+                server={server}
+              />
+            ))}
+          </div>
+        )}
+        {!!videoChannels?.length && (
+          <div className="mt-2">
+            <ServerSection
+              role={role}
+              channelType={ChannelType.VIDEO}
+              sectionType="channels"
+              label="Video Channels"
+            />
+            {videoChannels.map((channel) => (
+              <ServerChannel
+                key={channel.id}
+                channel={channel}
+                role={role}
+                server={server}
+              />
+            ))}
+          </div>
+        )}
       </ScrollArea>
     </div>
   );

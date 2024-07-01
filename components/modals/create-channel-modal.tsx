@@ -40,13 +40,13 @@ const formSchema = Z.object({
   type: Z.nativeEnum(ChannelType)
 });
 export const CreateChannelModal = () => {
-  const { isOpen, onClose, type } = useModal();
+  const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
   const params = useParams();
   const form = useForm({
     defaultValues: {
       name: "",
-      type: ChannelType.TEXT,
+      type: data.channelType ? data.channelType : ChannelType.TEXT,
     },
     resolver: zodResolver(formSchema),
   });
