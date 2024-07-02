@@ -10,7 +10,7 @@ interface IServerSectionProps {
   role?: MemberRole;
   label: string;
   sectionType?: "channels" | "members";
-  channelType: ChannelType;
+  channelType?: ChannelType;
   server?: ServerWithMembersWithProfiles;
 }
 
