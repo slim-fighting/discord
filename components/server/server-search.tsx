@@ -25,7 +25,7 @@ export const ServerSearch = ({
     useEffect(()=> {
         const down = (e:KeyboardEvent)=> {
             if(e.key === "k" && (e.metaKey || e.ctrlKey)) {
-                e.preventDefault();
+                e.stopPropagation();
                 setOpen(open=>!open);
             }
         }

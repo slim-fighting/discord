@@ -28,12 +28,17 @@ export const ServerChannel = ({
   const router = useRouter();
   const Icon = iconMap[channel.type];
   const { onOpen } = useModal();
+  const onClick = () => {
+    router.push(`/servers/${params?.serverId}/channels/${channel.id}`);
+  }
+
   return (
     <button
       className={cn(
         "group w-full flex items-center gap-x-2 mb-1 px-2 py-2 rounded-md hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition",
         params?.channelId === channel.id && "bg-zinc-700/20 dark:bg-zinc-700"
       )}
+      onClick={onClick}
     >
       <Icon className="flex-shrink h-5 w-5 text-zinc-500 dark:text-zinc-400" />
       <p
