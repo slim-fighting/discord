@@ -86,7 +86,7 @@ model Channel {
 model Message {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   content String
-  fileUrl String
+  fileUrl String?
   memberId String @db.ObjectId
   member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
   channelId String @db.ObjectId
@@ -112,7 +112,7 @@ model Conversation {
 model DirectMessage {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   content String
-  fileUrl String
+  fileUrl String?
   memberId String @db.ObjectId
   member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
   conversationId String @db.ObjectId

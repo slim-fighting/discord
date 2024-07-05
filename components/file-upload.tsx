@@ -1,5 +1,5 @@
 import { UploadDropzone } from "@/lib/uploading";
-import { X } from "lucide-react";
+import { FileIcon, X } from "lucide-react";
 import Image from "next/image";
 interface FileUploadProps {
   value: string;
@@ -22,6 +22,28 @@ const FileUpload = ({ onChange, endpoint, value }: FileUploadProps) => {
       </div>
     );
   }
+    if (value && fileType === "pdf") {
+      return (
+        <div className="relative flex items-center mt-2 p-2 rounded-md bg-background/10">
+          <FileIcon className="h-10 w-10 fill-indigo-200 stroke-indigo-400" />
+          <a
+            href={value}
+            target="_black"
+            rel="noopener noreferrer"
+            className="text-sm ml-2 text-indigo-500 dark:text-indigo-400 hover:underline"
+          >
+            {value}
+          </a>
+          <button
+            className="absolute -top-2 -right-2 shadow-sm bg-rose-500 rounded-full text-white p-1"
+            onClick={() => onChange("")}
+            type="button"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      );
+    }
   return (
     <UploadDropzone
       endpoint={endpoint}
