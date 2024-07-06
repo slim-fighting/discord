@@ -21,6 +21,8 @@ import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Socket } from "socket.io";
+import { useModal } from "@/hooks/use-modal-store";
+import { useParams, useRouter } from "next/navigation";
 
 interface IChatItemProps {
     id: string;
@@ -67,7 +69,6 @@ export const ChatItem = ({
     const isPDF = fileType === "pdf";
     const isImage = !isPDF && fileUrl;
     const [isEditing, setIsEditing] = useState(false);
-    const [isDeleting, setIsDeleting] = useState(false);
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
@@ -75,7 +76,9 @@ export const ChatItem = ({
       },
     });
     const isLoading = form.formState.isSubmitting;
-
+    const { onOpen } = useModal();
+    const params = useParams();
+    const router = useRouter();
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
           const url = qs.stringifyUrl({
@@ -83,9 +86,18 @@ export const ChatItem = ({
             query: socketQuery,
           });
           await axios.patch(url, values);
+          form.reset();
+          setIsEditing(false);
         } catch (error) {
           console.log(error);
         }
+    }
+
+    const onMemberClick = () => {
+      if(member.id === currentMember.id) {
+        return;
+      }
+      router.push(`/servers/${params?.serverId}/conversations/${member.id}`)
     }
 
     useEffect(()=> {
@@ -107,7 +119,7 @@ export const ChatItem = ({
   return (
     <div className="group w-full flex items-center relative p-4 hover:bg-black/5 transition">
       <div className="group flex items-start gap-x-2 w-full">
-        <div className="cursor-pointer hover:drop-shadow-md transition">
+        <div onClick={onMemberClick} className="cursor-pointer hover:drop-shadow-md transition">
           <UserAvatar src={member.profile.imageUrl} />
         </div>
         <div className="flex flex-col w-full">
@@ -219,7 +231,7 @@ export const ChatItem = ({
           )}
           <ActionTooltip label="Delete">
             <Trash
-              onClick={() => setIsDeleting(true)}
+              onClick={() => onOpen("deleteMessage", { apiUrl: `${socketUrl}/${id}`, query: socketQuery})}
               className="cursor-pointer h-4 w-4 ml-auto text-zinc-500 hover:text-zinc-600 dark:hover:text-z-300 transition"
             />
           </ActionTooltip>
